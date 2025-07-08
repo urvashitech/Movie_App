@@ -1,32 +1,56 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MovieCard from '../component/MovieCard'
 import "../css/Home.css"
+import { getPopularMovie } from '../services/api'
 
 function Home() {
-    const movies = [
-        {
-            id : 1 ,
-            title : "Squid Game" ,
-            release_date : "27 june "
-        },
-        {
-            id : 2 , 
-            title : "All of us are dead" , 
-            release_date : " 25 march" 
-        },
-        {
-            id : 3 ,
-            title : "Jewel's of section e ",
-            release_date : "29 june "
-        }
-    ]
-    
-    const handleOnClick = (e)=>{
-        e.preventDefault();
-        alert(searchQuery);
-        setSearchQuery("......")
-    }
     const [searchQuery , setSearchQuery ] = useState("") 
+    const [error , setError] = useState(null)
+    const [loading , setLoading] = useState(true)
+    const [movies , setMovies] = useState([])
+
+    useEffect(()=>{
+
+        const loadingPopular = async()=>{
+            try {
+                
+                const popularMovies = await getPopularMovie()
+                setMovies(popularMovies)
+            } catch (error) {
+                console.log(error)
+                setError("failed to load movies....")
+                
+            }
+            finally{
+                SetLoading(false)
+            }
+        }
+        loadingPopular();
+    },[])
+    const handleOnClick = async (e) => {
+  e.preventDefault();
+
+  
+  if (!searchQuery.trim()) return;
+
+ 
+  if (loading) return;
+
+  setLoading(true);
+  try {
+    const searchResults = await searchMovies(searchQuery);
+    setMovies(searchResults);
+    setError(null); 
+  } catch (err) {
+    console.error("Search error:", err);
+    setError("Failed to search movies...");
+  } finally {
+    setLoading(false);
+  }
+};
+
+    
+    
   return (
     <div className='home'>
         <form className='search-form'>
