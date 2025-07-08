@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import MovieCard from '../component/MovieCard'
+import "../css/Home.css"
 
 function Home() {
     const movies = [
@@ -28,11 +29,11 @@ function Home() {
     const [searchQuery , setSearchQuery ] = useState("") 
   return (
     <div className='home'>
-        <form>
-            <input type='text' placeholder='Search' value={searchQuery} onChange ={(e)=>{
+        <form className='search-form'>
+            <input type='text' placeholder='Search' className='search-input' value={searchQuery} onChange ={(e)=>{
                 setSearchQuery(e.target.value)
             }}/>
-            <button onClick={handleOnClick} >Search</button>
+            <button onClick={handleOnClick} className='search-button' >Search</button>
         </form>
 
     <div className='movie-grid'>
