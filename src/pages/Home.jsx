@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import MovieCard from '../component/MovieCard'
 
 function Home() {
@@ -19,20 +19,27 @@ function Home() {
             release_date : "29 june "
         }
     ]
-    const onSearch = (e)=>{
-        console.log(e.targate.value)
+    
+    const handleOnClick = (e)=>{
+        e.preventDefault();
+        alert(searchQuery);
+        setSearchQuery("......")
     }
+    const [searchQuery , setSearchQuery ] = useState("") 
   return (
     <div className='home'>
         <form>
-            <input type='text' placeholder='Search'/>
-            <button onClick={onSearch}>Search</button>
+            <input type='text' placeholder='Search' value={searchQuery} onChange ={(e)=>{
+                setSearchQuery(e.target.value)
+            }}/>
+            <button onClick={handleOnClick} >Search</button>
         </form>
 
     <div className='movie-grid'>
-        {movies.map((movie)=> (
-            <MovieCard movie={movie} key={movie.id}/>
-        ))}
+        {movies.map((movie)=> 
+            movie.title.toLocaleLowerCase().startsWith(searchQuery) && (
+            <MovieCard movie={movie} key={movie.id}/>)
+        )}
     </div>
     </div>
   )
