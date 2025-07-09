@@ -21,7 +21,6 @@ function Home() {
         setLoading(false);
       }
     };
-
     loadPopularMovies();
   }, []);
 
